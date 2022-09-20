@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: service-api-config
+  namespace: example
+data:
+  TRANSACTIONS_API_ADDR: ledgerwriter:80
+  BALANCES_API_ADDR: balancereader:80
+  HISTORY_API_ADDR: transactionhistory:80
+  CONTACTS_API_ADDR: contacts:80
+  USERSERVICE_API_ADDR: userservice:80
