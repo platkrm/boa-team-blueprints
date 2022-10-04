@@ -32,7 +32,7 @@ spec:
             - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/bank-of-anthos-ci/frontend:app-version
+        image: gcr.io/bank-of-anthos-ci/frontend:v0.5.6
         volumeMounts:
         - name: keys
           mountPath: /tmp/.ssh
