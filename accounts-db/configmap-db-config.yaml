@@ -3,10 +3,10 @@ kind: ConfigMap
 metadata: # kpt-merge: example/db-config
   name: db-config
   namespace: example
-  annotations:
-    internal.kpt.dev/upstream-identifier: '|ConfigMap|example|db-config'
   labels:
     app: accounts-db
+  annotations:
+    internal.kpt.dev/upstream-identifier: '|ConfigMap|example|db-config'
 data:
   POSTGRES_DB: db
   POSTGRES_USER: db-admin
