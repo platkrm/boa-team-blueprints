@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: demo-data-config
   namespace: example
+  labels:
+    app: frontend
 data:
   USE_DEMO_DATA: "True"
   DEMO_LOGIN_USERNAME: testuser

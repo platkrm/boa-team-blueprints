@@ -9,14 +9,14 @@ upstream:
   git:
     repo: git@github.com:platkrm/boa-platform-blueprints
     directory: /base-app
-    ref: main
+    ref: v1
   updateStrategy: resource-merge
 upstreamLock:
   type: git
   git:
     repo: git@github.com:platkrm/boa-platform-blueprints
     directory: /base-app
-    ref: main
+    ref: base-app/v1
     commit: b12f8ab6417165848bbb408d4d5cad9ef739c944
 info:
   description: sample description

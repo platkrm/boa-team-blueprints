@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: service-api-config
   namespace: example
+  labels:
+    app: frontend
 data:
   TRANSACTIONS_API_ADDR: ledgerwriter:80
   BALANCES_API_ADDR: balancereader:80
