@@ -2,33 +2,31 @@ apiVersion: kpt.dev/v1
 kind: Kptfile
 metadata:
   name: contacts
-  labels:
-    app: contacts
   annotations:
     config.kubernetes.io/local-config: "true"
 upstream:
   type: git
   git:
-    repo: git@github.com:droot/kpt-samples
+    repo: git@github.com:platkrm/boa-platform-blueprints
     directory: /base-app
-    ref: bank-of-anthos-pkgs
+    ref: v3
   updateStrategy: resource-merge
 upstreamLock:
   type: git
   git:
-    repo: git@github.com:droot/kpt-samples
+    repo: git@github.com:platkrm/boa-platform-blueprints
     directory: /base-app
-    ref: bank-of-anthos-pkgs
-    commit: ba18d8432d618af662efff7d81a63c70e9ba3ab8
+    ref: base-app/v3
+    commit: 93acec3966e48e50e5d0906c65ee1afc12b2ab60
 info:
   description: sample description
 pipeline:
   mutators:
     - image: set-namespace:v0.4.1
       configPath: package-context.yaml
-    - image: set-labels:v0.1.5
+    - image: gcr.io/kpt-fn-demo/set-labels:v0.1.5
       configPath: fn-config-setlabels.yaml
     - image: starlark:v0.4.3
       configPath: fn-config-setname.yaml
-    - image: set-image:v0.1.1
-      configPath: fn-config-setimage.yaml
+    - image: starlark:v0.4.3
+      configPath: fn-config-set-app-image.yaml
