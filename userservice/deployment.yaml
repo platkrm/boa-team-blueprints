@@ -1,10 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata:
+metadata: # kpt-merge: example/base-app
   name: userservice
   namespace: example
   labels:
     app: userservice
+  annotations:
+    internal.kpt.dev/upstream-identifier: apps|Deployment|example|base-app
 spec:
   selector:
     matchLabels:
@@ -22,7 +24,7 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       containers:
-      - name: userservice
+      - name: primary
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -30,7 +32,7 @@ spec:
             - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/bank-of-anthos-ci/userservice:v0.5.7
+        image: gcr.io/bank-of-anthos-ci/userservice:v0.5.6
         volumeMounts:
         - name: keys
           mountPath: /tmp/.ssh
@@ -42,11 +44,11 @@ spec:
           containerPort: 8080
         env:
         - name: VERSION
-          value: v0.5.7
+          value: v0.5.6
         - name: PORT
           value: "8080"
         - name: ENABLE_TRACING
-          value: "true"
+          value: "false"
         - name: TOKEN_EXPIRY_SECONDS
           value: "3600"
         - name: PRIV_KEY_PATH
@@ -54,6 +56,12 @@ spec:
         # Valid levels are debug, info, warning, error, critical. If no valid level is set, gunicorn will default to info.
         - name: LOG_LEVEL
           value: info
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: ENABLE_METRICS
+          value: "false"
         envFrom:
         - configMapRef:
             name: environment-config
@@ -73,14 +81,17 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
+        livenessProbe:
+          httpGet: {}
       volumes:
+      # droot: should this be part of the base-app ?
       - name: keys
         secret:
           secretName: jwt-key
           items:
-          - key: jwtRS256.key
-            path: privatekey
           - key: jwtRS256.key.pub
             path: publickey
+          - key: jwtRS256.key
+            path: privatekey
       - emptyDir: {}
         name: tmp

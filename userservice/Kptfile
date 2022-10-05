@@ -4,16 +4,29 @@ metadata:
   name: userservice
   annotations:
     config.kubernetes.io/local-config: "true"
-  labels:
-    app: userservice
+upstream:
+  type: git
+  git:
+    repo: git@github.com:platkrm/boa-platform-blueprints
+    directory: /base-app
+    ref: v3
+  updateStrategy: resource-merge
+upstreamLock:
+  type: git
+  git:
+    repo: git@github.com:platkrm/boa-platform-blueprints
+    directory: /base-app
+    ref: base-app/v3
+    commit: 93acec3966e48e50e5d0906c65ee1afc12b2ab60
 info:
-  description: UserService microservice configuration package.
+  description: sample description
 pipeline:
   mutators:
-  - image: gcr.io/kpt-fn/set-namespace:v0.4.1
-    configPath: package-context.yaml
-  - image: gcr.io/kpt-fn/set-labels:v0.1.5
-    configPath: set-labels.yaml
-  validators:
-  - image: gcr.io/kpt-fn/kubeval:v0.3.0
-    configPath: config-map-2.yaml
+    - image: set-namespace:v0.4.1
+      configPath: package-context.yaml
+    - image: gcr.io/kpt-fn-demo/set-labels:v0.1.5
+      configPath: fn-config-setlabels.yaml
+    - image: starlark:v0.4.3
+      configPath: fn-config-setname.yaml
+    - image: starlark:v0.4.3
+      configPath: fn-config-set-app-image.yaml

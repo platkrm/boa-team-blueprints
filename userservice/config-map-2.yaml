@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: default
-  namespace: example
-  labels:
-    app: userservice
-data:
-  ignore_missing_schemas: "true"
