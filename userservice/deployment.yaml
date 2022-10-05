@@ -81,8 +81,6 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
-        livenessProbe:
-          httpGet: {}
       volumes:
       # droot: should this be part of the base-app ?
       - name: keys
